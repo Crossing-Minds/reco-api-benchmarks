@@ -1,0 +1,3 @@
+[submodule "xminds-python"]
+	path = xminds-python
+	url = git@git.crossingminds.org:opensource/xminds-python.git
