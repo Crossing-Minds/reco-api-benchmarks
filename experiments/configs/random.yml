@@ -1,0 +1,26 @@
+experiment_name: 'random'
+description: 'This experiment verifies that APIs run on meaningless data'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'random'
+  n_users:
+    - 500
+  n_items:
+    - 200
+  n_ratings:
+    - 5_000
+  dimension:
+    - 3
+  ratings_scaling:
+    - 'gaussian'
+  interactions_distribution:
+    - 'exponential'
+  'users_features,items_features':
+    - [[], []]
+test:
+  n_items_per_user: 16
+  n_recos: 100
+

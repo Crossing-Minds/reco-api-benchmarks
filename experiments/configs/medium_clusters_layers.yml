@@ -1,0 +1,31 @@
+experiment_name: 'medium_clusters_layers'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Medium-sized experiment using decreasing-clusters-layers'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'decreasing-clusters-layers'   # trop facile whatever `dimension`; 3 and you got everything
+  n_users:
+    - 20_000
+  n_items:
+    - 2_000
+  n_ratings:
+    - 100_000
+    - 250_000
+    - 500_000
+    - 1_000_000
+  dimension:
+    - 'py:(3,)*128'
+  ratings_scaling:
+    - 'gaussian'
+  interactions_distribution:
+    - 'exponential'
+  interactions_ratings_based:
+    - 'explicit'
+  'users_features,items_features':
+    - [[], []]
+test:
+  n_items_per_user: 16
+  n_recos: 4_000
+

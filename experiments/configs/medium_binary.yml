@@ -1,0 +1,31 @@
+experiment_name: 'medium_binary'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Medium-sized experiment using pure clusters and explicit MNAR'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'pure-clusters'
+  n_users:
+    - 20_000
+  n_items:
+    - 2_000
+  n_ratings:
+    - 100_000
+    - 250_000
+    - 500_000
+    - 1_000_000
+  dimension:
+    - 5
+  ratings_scaling:
+    - 'standard'
+  interactions_distribution:
+    - ['exponential', {'min_per_user': 2}]
+  interactions_ratings_based:
+    - 'explicit'
+  'users_features,items_features':
+    - [[], []]
+test:
+  n_items_per_user: 16
+  n_recos: 4_000
+

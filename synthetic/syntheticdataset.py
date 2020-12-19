@@ -26,19 +26,9 @@ from .utils import set_random_seed
 class SyntheticDataset:
     ID_DTYPE = 'uint32'
 
-    def __init__(
-        self,
-        ratings,
-        users,
-        items,
-        users_m2ms,
-        items_m2ms,
-        ratings_factory,
-        config,
-    ):
+    def __init__(self, ratings, users, items, users_m2ms, items_m2ms, ratings_factory, config):
         """
         Private constructor. Please use `SyntheticDataset.sample` instead
-
         :param RATINGS_DTYPE-array ratings:
         :param struct-array users: users ids and eventual users features 
         :param struct-array items: items ids and eventual items features
@@ -78,39 +68,49 @@ class SyntheticDataset:
         :param int? n_ratings: 
         :param string-or-tuple? synthetic_model: Type of synthetic model to be used.
         :param int-or-tuple? dimension: Describes the dimension of the synthetic model. 
-        :param str? ratings_scaling: How ratings are scaled into [1, 10]. Either 'standard' or 'gaussian'.
-        :param str-or-tuple? interactions_distribution: How interactions are distributed among users and items.
-        :param str-or-False? interactions_ratings_based: Whether and how to bias interactions sampling.
+        :param str? ratings_scaling: How ratings are scaled into [1, 10]. Either 'standard'
+            or 'gaussian'.
+        :param str-or-tuple? interactions_distribution: How interactions are distributed among
+            users and items.
+        :param str-or-False? interactions_ratings_based: Whether and how to bias interactions
+            sampling.
         :param list? users_features: Describes the users features. 
         :param list? items_features: Same as `users_features` but for items.
 
         Possible values for `synthetic_model`:
         - 'pure-embeddings'
         - 'decreasing-pure-embeddings' | additionnal kwarg(s): decrease_factor=0.9
-        - 'clustered-embeddings' | additionnal kwarg(s): n_clusters=None, ortho_fraction=1., cluster_scale=4., normalize=True
+        - 'clustered-embeddings' | additionnal kwarg(s): n_clusters=None, ortho_fraction=1.,
+            cluster_scale=4., normalize=True
         - 'pure-clusters' 
         - 'clusters-product' | additionnal kwarg(s): decrease_factor=0.9, unbalanced_factor=1.
         - 'clusters-layers' | additionnal kwarg(s): unbalanced_factor=None
         - 'decreasing-clusters-layers': 
-        See the docstring of the corresponding classes (in `ratingssampler.py`) for details about each possibility
+        See the docstring of the corresponding classes (in `ratingssampler.py`) for details
+            about each possibility
         
         Possible values for `dimension`:
-        - the embeddings dimension for 'pure-embeddings', 'decreasing-pure-embeddings' or 'clustered-embeddings'
+        - the embeddings dimension for 'pure-embeddings', 'decreasing-pure-embeddings'
+            or 'clustered-embeddings'
         - the number of clusters for 'pure-clusters'
         - the number of clusters-layers for 'clusters-product', 
-            if dimension is a int-tuple, each int is the number of clusters for the corresponding layer 
-                (so the number of layers is the length of the tuple)
+            if dimension is a int-tuple, each int is the number of clusters for the
+                corresponding layer (so the number of layers is the length of the tuple)
 
         Meaning of the possible values of `ratings_scaling`:
         - 'standard': scale ratings in [1, 10] preserving the shape of the ratings distribution
-        - 'gaussian': scale ratings in [1, 10] transporting the shape of the ratings to a truncated gaussian distibution centered in 5.5
+        - 'gaussian': scale ratings in [1, 10] transporting the shape of the ratings to a
+            truncated gaussian distibution centered in 5.5
 
         Possible values for `interactions_distribution`:
         - 'uniform': the number of interactions of each user/item will roughly be the same.
-        - 'exponential': the number of interactions of users/items follow an exponential distribution
-        - 'invlog': the number of interactions of users/items is distributed even more unevenly than for 'exponential'
+        - 'exponential': the number of interactions of users/items follow an
+            exponential distribution
+        - 'invlog': the number of interactions of users/items is distributed even more unevenly
+            than for 'exponential'
         - a dict {'user': distribution, 'item': distribution}
-        - tuple(one of above, addition_kwargs). See the docstring of `InteractionSampler` for details.
+        - tuple(one of above, addition_kwargs). See the docstring of `InteractionSampler`
+            for details.
 
         Possible values for `interactions_ratings_based`:
         - False: interactions will be missing at random 
@@ -121,9 +121,10 @@ class SyntheticDataset:
         About features:
         Users/items features are based on one dimension/layer of the users/items synthetic truth.
         This synthetic truth can either be embeddings, clusterings, layers of clusterings, ...
-        The length of the given list must be at most the number of dimension/layer of the synthetic truth.
-        Warning: for 'pure-clusters', this number is 1. Try 'clusters-product' for fully-clustered datasets 
-            but with higher number of synthetic truth layers. 
+        The length of the given list must be at most the number of dimension/layer of the
+            synthetic truth.
+        Warning: for 'pure-clusters', this number is 1. Try 'clusters-product' for
+            fully-clustered datasets but with higher number of synthetic truth layers.
         Possible values for elements of the `users_features` or `items_features` list:
         - a string: the name of the feature. Either:
             - 'scalar': scalar values
@@ -132,7 +133,8 @@ class SyntheticDataset:
             - 'tags1': simple tags
             - 'tags2': more complex tags
         - a tuple (string, float): the name and the difficulty of the feature
-            the difficulty (in [0, 1]) defines how hard it is to get valuable information from this feature:
+            the difficulty (in [0, 1]) defines how hard it is to get valuable information from
+                this feature:
                 - 0 means straight-forward / very easy (default is 0)
                 - 1 means impossible
         - None: no feature for this dimension.
@@ -240,15 +242,7 @@ class SyntheticDataset:
         else:
             items = set_or_add_to_structured(items, items_id)
         
-        return cls(
-            ratings,
-            users,
-            items,
-            users_m2ms,
-            items_m2ms,
-            ratings_factory,
-            config
-        )
+        return cls(ratings, users, items, users_m2ms, items_m2ms, ratings_factory, config)
 
     def get_ratings(self, users_id, items_id):
         """

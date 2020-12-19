@@ -1,0 +1,1 @@
+from .amazonrecoapi import AmazonRecoApi

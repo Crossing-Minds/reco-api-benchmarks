@@ -10,7 +10,6 @@ class RatingsFactory:
     """
     This class articulates the synthetic model with the ratings scaler.
     Its main method is `get_ratings`
-    
     In the future, it may also handle the ratings noise
     """
     N_SAMPLES_SCALER_FIT = 10_000
@@ -43,7 +42,6 @@ class RatingsFactory:
         :param (n,)-int-array users_idx:
         :param (n,)-int-array items_idx:
         :param bool? scale: whether to apply the scaler transform or not
-
         :returns: (n,)-float-array ratings
         """
         ratings = self.synthetic_model.get_ratings(users_idx, items_idx)
@@ -66,9 +64,8 @@ class BaseRatingsScaler:
 
     def transform(self, ratings):
         """
-        :param nd-float-array ratings:
-
         Map ratings into [MIN_RATING, MAX_RATING] (continuous interval)
+        :param nd-float-array ratings:
         :return: nd-float-array scaled_ratings
         """
         shape = ratings.shape
@@ -80,7 +77,6 @@ class BaseRatingsScaler:
     def _transform(self, ratings):
         """
         :param 1d-float-array ratings: (n,)
-
         :return: 1d-float-array scaled_ratings (n,)
         """
         raise NotImplementedError()
@@ -88,17 +84,13 @@ class BaseRatingsScaler:
 
 class StandardRatingsScaler(BaseRatingsScaler):
     """
-    Clip extreme ratings
-    Then, scale the ratings linearly into [MIN_RATING, MAX_RATING]
-
-    Clipping extreme values avoids that ratings are too concentrated 
-    after the linear scaling step.
+    Clip extreme ratings then, scale the ratings linearly into [MIN_RATING, MAX_RATING]
+    Clipping extreme values avoids that ratings are too concentrated after the linear scaling step.
     """
 
     def __init__(self, q_clip=0.03):
         """
         :param float q: quantile for the clipping step
-
         Ratings will be clipped between the q-th quantile and the (1-q)-th quantile.
         """
         assert q_clip >= 0

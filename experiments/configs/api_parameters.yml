@@ -1,0 +1,42 @@
+experiment_name: 'api_parameters'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Medium-sized experiment using various APIs parameters'
+save_datasets: True
+apis:
+  environment: 'prod'
+  XMinds:
+    algorithm:
+      - 'default'               # default
+  Recombee:
+    algorithm:
+      - 'recombee:personal'     # default
+      - 'recombee:default'
+  Amazon:
+    algorithm:
+      - 'hrnn'                  # default
+      - 'user-personalization'
+    transform_to_implicit:
+      - true                    # default
+      - false
+datasets:
+  synthetic_model:
+    - 'pure-clusters'
+  n_users:
+    - 20_000
+  n_items:
+    - 2_000
+  n_ratings:
+    - 100_000
+    - 250_000
+    - 500_000
+  dimension:
+    - 5
+  interactions_distribution:
+    - 'exponential'
+  interactions_ratings_based:
+    - 'explicit'
+  'users_features,items_features':
+    - [[], []]
+test:
+  n_items_per_user: 16
+  n_recos: 4_000
+

@@ -1,0 +1,31 @@
+experiment_name: 'big_clusters_layers'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Big experiment using decreasing-clusters-layers'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'decreasing-clusters-layers' 
+  n_users:
+    - 200_000
+  n_items:
+    - 20_000
+  n_ratings:
+    - 1_000_000
+    - 2_500_000
+    - 5_000_000
+    - 10_000_000
+  dimension:
+    - 'py:(3,)*128'
+  ratings_scaling:
+    - 'gaussian'
+  interactions_distribution:
+    - 'exponential'
+  interactions_ratings_based:
+    - 'explicit'
+  'users_features,items_features':
+    - [[], []]
+test:
+  n_items_per_user: 16
+  n_recos: 4_000
+

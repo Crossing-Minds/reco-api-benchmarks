@@ -15,9 +15,10 @@ class BaseFeatureSampler:
 
     def sample(self, ground_turth_dim):
         """
-        :param (n,)-array ground_turth_dim: One dimension/layer of the ground truth (either users or items ground truth)
-
-        :return array-or-sparse-matrix: a feature of shape (n,m) based on the given `ground_turth_dim`
+        :param (n,)-array ground_turth_dim: One dimension/layer of the ground truth
+            (either users or items ground truth)
+        :return array-or-sparse-matrix: a feature of shape (n,m) based on the given
+            `ground_turth_dim`
         """
         raise NotImplementedError()
 
@@ -30,7 +31,8 @@ class TagsSampler(BaseFeatureSampler):
     IS_M2M = True
     DTYPE = 'u4'
 
-    def __init__(self, difficulty=0, clusters_tag_dim=None, n_tags_range=(2, 6), unbalanced_factor=1):
+    def __init__(self, difficulty=0, clusters_tag_dim=None, n_tags_range=(2, 6),
+                 unbalanced_factor=1):
         super().__init__(difficulty)
         self.clusters_tag_dim = clusters_tag_dim
         self.n_tags_range = n_tags_range
@@ -43,7 +45,7 @@ class TagsSampler(BaseFeatureSampler):
         :return: coo-matrix of shape (n,n_tags)
         """
         n_entities = clusters.size
-        n_clusters = int(numpy.rint(numpy.max(clusters))) + 1  # TODO: can be int if wrong data type
+        n_clusters = int(numpy.rint(numpy.max(clusters))) + 1
 
         # clusters_tag_dim (n_clusters,) is the number of tags associated 
         # with each clusters
@@ -121,6 +123,7 @@ class ScalarSampler(BaseFeatureSampler):
         f[shuffle] = shuffled
         return f
 
+
 def assert_feature_truth_consistency(feature, truth):
     msg = f'{feature} is not compatible with the synthetic model'
     if truth.dtype.kind in 'iu':
@@ -130,17 +133,18 @@ def assert_feature_truth_consistency(feature, truth):
     else:
         raise TypeError('unexpected users/items truth dtype: {truth.dtype}')
 
+
 def sample_features(features, features_of, synthetic_truth):
     """
     :param list-of-subclass-of-BaseFeatureSampler features:
     :param str feature_of: either 'user' or 'item'
-    :param array synthetic_truth: 
-
+    :param array synthetic_truth:
     :return: tuple(
         array features_array: concatenation of non-m2m features in one single structured array
-        list-of-dict features_m2ms: list of dict {'name': feature_name, 'array': struct-array['user/item_index', 'value_id']}
+        list-of-dict features_m2ms: list of dict
+            {'name': feature_name, 'array': struct-array['user/item_index', 'value_id']}
             (same format as what is exepected by the crossing minds API)
-    )
+        )
     """
     assert features_of in ['user', 'item']
     assert len(features) <= synthetic_truth.shape[1], f'Too many {features_of} features.'

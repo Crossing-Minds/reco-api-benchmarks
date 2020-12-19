@@ -50,8 +50,9 @@ class InteractionsSamplerTestCase(unittest.TestCase):
         n_users = 1000
         n_items = 2000
 
-        exp_sampler = InteractionsSampler(density, users_distribution='invlog', items_distribution='exponential',
-                                          min_per_user=2, ensure_one_per_item=False)
+        exp_sampler = InteractionsSampler(
+            density, users_distribution='invlog', items_distribution='exponential',
+            min_per_user=2, ensure_one_per_item=False)
         exp_ratings = exp_sampler.sample(n_users, n_items)
         # check we have approximately the expected number of interactions
         n_ratings_expected = density * n_users * n_items

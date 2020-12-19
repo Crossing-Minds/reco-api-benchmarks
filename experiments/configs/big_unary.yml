@@ -1,0 +1,28 @@
+experiment_name: 'big_unary'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Big experiment using pure clusters and implict MNAR leading to unary settings'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'pure-clusters'
+  n_users:
+    - 200_000
+  n_items:
+    - 20_000
+  n_ratings:
+    - 500_000  # best score: iALS avg1@20=8.7
+    - 1_000_000
+    - 2_500_000
+    - 5_000_000
+  dimension:
+    - 5
+  ratings_scaling:
+    - 'standard'
+  interactions_distribution:
+    - {'user': 'invlog', 'item': 'exponential'}
+  interactions_ratings_based:
+    - 'implicit'
+test:
+  n_items_per_user: 16
+  n_recos: 4_000

@@ -1,0 +1,28 @@
+experiment_name: 'debug'
+description: 'This experiment verifies that the pipeline works'
+save_datasets: False
+apis:
+  environment: 'staging'
+datasets:
+  synthetic_model:
+    - 'pure-embeddings'
+  n_users:
+    - 500
+  n_items:
+    - 200
+  n_ratings:
+    - 20_000
+  dimension:
+    - 2
+  ratings_scaling:
+    - 'standard'
+  interactions_distribution:
+    - 'uniform'
+  interactions_ratings_based:
+    - false
+  'users_features,items_features':
+    - [[], []]
+    - [['scalar'], [['scalar', 0.3]]]
+test:
+  n_items_per_user: 6
+  n_recos: 20

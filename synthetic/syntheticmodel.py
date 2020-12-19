@@ -8,10 +8,10 @@ from .utils import partition_int
 
 class BaseSyntheticModel:
     """
-    The synthetic model stores the necessary information to compute the raw rating of any user-item pair and defines 
-    the logic of the computation.
-    The stored information is the "synthetic truth" (`users_truth` and `items_truth`) behind the ratings.
-    It can either be embeddings, clusterings, layers of clusterings, ...
+    The synthetic model stores the necessary information to compute the raw rating of any
+    user-item pair and defines the logic of the computation.
+    The stored information is the "synthetic truth" (`users_truth` and `items_truth`) behind
+    the ratings. It can either be embeddings, clusterings, layers of clusterings, ...
     """
 
     def __init__(self, users_truth, items_truth):
@@ -31,7 +31,6 @@ class BaseSyntheticModel:
         """
         :param (n,)-int-array users_idx:
         :param (n,)-int-array items_idx:
-
         :returns: (n,)-float-array raw ratings
         """
         users = self.users_truth[users_idx]
@@ -42,9 +41,8 @@ class BaseSyntheticModel:
     def _get_ratings(self, users_truth, items_truth):
         """
         :param (n,d)-array users_truth: 
-        :param (n,d)-array items_truth: 
-
-        :return (n,)-float-array: unscaled ratings
+        :param (n,d)-array items_truth:
+        :returns: (n,)-float-array unscaled ratings
         """
         raise NotImplementedError()
 
@@ -144,7 +142,6 @@ class BaseSyntheticTruthSampler:
         """
         :param int n_users:
         :param int n_items:
-
         :returns: BaseSyntheticModel
         """
         raise NotImplementedError()
@@ -155,8 +152,8 @@ class ClusteredEmbeddingsRatingsSampler(BaseSyntheticTruthSampler):
     Ratings are the dot product of user and item embeddings.
 
     Sampled embeddings are the sum of a cluster contribution and an individual contribution.
-    Sampled cluster contributions are the sum of an orthogonal part (different clusters are orthognal)
-        and of a random part.
+    Sampled cluster contributions are the sum of an orthogonal part (different clusters are
+        orthogonal) and of a random part.
     """
 
     def __init__(self, d, n_clusters=None, ortho_fraction=1., cluster_scale=4., normalize=True):
@@ -166,11 +163,14 @@ class ClusteredEmbeddingsRatingsSampler(BaseSyntheticTruthSampler):
         :param float? ortho_fraction: in [0, 1]. Controls how much cluster centroids are 
             forced to be orthogonal. 
             Note: the higher is the dimension, the more two random vectors are orthogonal.
-                Thus, if `d` is very large, clusters will be almost orthongals even if `ortho_fraction` is 0
-        :param float? cluster_scale: in [0, np.inf]. Controls cluster centroids importance in the embeddings.
+                Thus, if `d` is very large, clusters will be almost orthongals even if
+                `ortho_fraction` is 0
+        :param float? cluster_scale: in [0, np.inf]. Controls cluster centroids importance in
+            the embeddings.
             0 -> no clusters
             np.inf -> pure-clusters
-        :param bool? normalize: wheter to normalize the embeddings (after summing the different contributions).
+        :param bool? normalize: wheter to normalize the embeddings (after summing the
+            different contributions).
         """
         assert d > 0
         assert (n_clusters or d) <= d
@@ -312,10 +312,10 @@ class ClustersLayersRatingsSampler(BaseSyntheticTruthSampler):
 
 class ClustersProductRatingsSampler(ClustersLayersRatingsSampler):
     """
-    The rating of a pair user-item only depends on whether they share the same cluster at each clustering layer.
+    The rating of a pair user-item only depends on whether they share the same cluster at
+    each clustering layer.
     This is very close to pure clusters, only the ground-truth explanation change (multiple layers) 
     which has an impact when it comes to users/items features.
-
     Clusters are unbalanced so that even with a lot of layers, ratings aren't almost all zeros.
     """
 
@@ -326,8 +326,7 @@ class ClustersProductRatingsSampler(ClustersLayersRatingsSampler):
 class DecreasingImportanceClustersLayersRatingsSampler(ClustersLayersRatingsSampler):
     """
     Similar to `DecreasingImportanceEmbeddingsRatingsSampler` but with clustering layers.
-    r(u, i) = sum_{k=1}^d alpha^k [x_uk == y_ik] 
-    (with alpah < 1)
+    r(u, i) = sum_{k=1}^d alpha^k [x_uk == y_ik]   (with alpah < 1)
     """
 
     def __init__(self, dims, decrease_factor=0.9, unbalanced_factor=1.):
@@ -335,7 +334,8 @@ class DecreasingImportanceClustersLayersRatingsSampler(ClustersLayersRatingsSamp
         self.decrease_factor = decrease_factor
 
     def _build_ratings_factory(self, users_clusters, items_clusters, dims):
-        return ClustersLayersModel(users_clusters, items_clusters, decrease_factor=self.decrease_factor)
+        return ClustersLayersModel(
+            users_clusters, items_clusters, decrease_factor=self.decrease_factor)
 
 
 class RandomRatingsSampler(BaseSyntheticTruthSampler):

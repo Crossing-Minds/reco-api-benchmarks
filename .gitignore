@@ -1,0 +1,15 @@
+dataset/*
+abacus/data/*
+xminds-python/*
+amazon/datasets/*
+qa_databases/*
+scripts/add_var*.py
+*__pycache__*
+*~HEAD
+*.html
+*.ipynb
+*.idea
+*.python-version
+*.vscode
+*.ipynb
+

@@ -1,0 +1,27 @@
+experiment_name: 'medium_unary_bis'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Medium-sized experiment using pure clusters and implict MNAR leading to unary settings'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'pure-clusters'
+  n_users:
+    - 20_000
+  n_items:
+    - 2_000
+  n_ratings: 
+#    - 50_000  # best score: iALS avg1@20=9.3
+#    - 100_000
+    - 250_000
+  dimension:
+    - 5
+  ratings_scaling:
+    - 'standard'
+  interactions_distribution:
+    - 'exponential'
+  interactions_ratings_based:
+    - 'implicit'
+test:
+  n_items_per_user: 16
+  n_recos: 4_000

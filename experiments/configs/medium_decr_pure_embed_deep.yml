@@ -1,0 +1,27 @@
+experiment_name: 'medium_decr_pure_embed'  # ^[a-zA-Z0-9][a-zA-Z0-9\-_]*  for AmazonModel
+description: 'Medium-sized experiment using decreasing pure embeddings. Models an explicit feedback setting.'
+save_datasets: True
+apis:
+  environment: 'prod'
+datasets:
+  synthetic_model:
+    - 'decreasing-pure-embeddings'
+  n_users:
+    - 20_000
+  n_items:
+    - 2_000
+  n_ratings:
+    - 250_000 # best scores: iiPCA: 6.9 / iALS: 7.7
+    - 500_000
+    - 1_000_000
+  dimension:
+    - 20
+  ratings_scaling:
+    - 'gaussian'
+  interactions_distribution:
+    - [{'user': 'invlog', 'item': 'exponential'}, {'min_per_user': 5}]
+  interactions_ratings_based:
+    - 'explicit'
+test:
+  n_items_per_user: 16
+  n_recos: 4_000

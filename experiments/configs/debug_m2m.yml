@@ -1,0 +1,28 @@
+experiment_name: 'debug_m2m'
+description: 'This experiment verifies that the pipeline works for the xminds API (with m2m features)'
+save_datasets: True  # False
+apis:
+  environment: 'staging'  # 'prod'
+datasets:
+  synthetic_model:
+    - 'decreasing-clusters-layers'
+  n_users:
+    - 500
+  n_items:
+    - 200
+  n_ratings:
+    - 20_000
+  dimension:
+    - 4
+  ratings_scaling:
+    - 'standard'
+  interactions_distribution:
+    - 'uniform'
+  interactions_ratings_based:
+    - false
+  'users_features,items_features':
+    - [[], []]
+    - [['cats1', 'tags2'], ['tags2', null, 'cats2', 'tags1', 'cats1']]
+test:
+  n_items_per_user: 6
+  n_recos: 20
